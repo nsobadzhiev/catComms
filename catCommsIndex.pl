@@ -3,7 +3,7 @@
 use warnings;
 require 'xmlParser.pl';
 
-my $indexFileName = "/media/niki/niki/Documents/Uni/Perl/project/fileIndex.xml";
+my $indexFileName = "/media/niki/niki/Documents/Uni/Perl/project/catComms/fileIndex.xml";
 
 sub getIndexFile()
 {
@@ -76,8 +76,7 @@ sub addCategoryForFile($$)
 					my @categories = tagsForFileEntry($fileEl);
 					push(@categories, $categoryName);
 					$fileEl->{tags}{tag} = \@categories;
-					xmlSave(\%indexhash, $indexFileName);
-					# XMLout(\%indexhash, OutputFile => $indexFileName);
+					xmlSaveWithRootItem(\%indexhash, $indexFileName, "index");
 					last;
 				}
 			}
@@ -111,7 +110,7 @@ sub removeCategoryForFile($$)
 					# remove this category and save the index file
 					splice(@categories, $arrayIndex, 1);
 					$fileEl->{tags}{tag} = \@categories;
-					XMLout(\%indexhash, OutputFile => $indexFileName);
+					xmlSaveWithRootItem(\%indexhash, $indexFileName, "index");
 					last;
 				}
 			}
@@ -175,7 +174,7 @@ sub addFileWithCategories($$)
 		# add the file to the xml structure and serialize it
 		push(@$allFiles, \%tagsHash);
 		$indexhash{file} = $allFiles;
-		xmlSave(\%indexhash, $indexFileName);
+		xmlSaveWithRootItem(\%indexhash, $indexFileName, "index");
 	}
 }
 
@@ -195,101 +194,12 @@ sub removeFile($)
 			{
 				splice(@$allFiles, $index, 1);
 				$indexhash{file} = $allFiles;
-				xmlSave(\%indexhash, $indexFileName);
+				xmlSaveWithRootItem(\%indexhash, $indexFileName, "index");
 				print "Removed index: $index\n";
 			}
 		}
 	#}
 }
-
-sub printHelp()
-{
-	print<<EOF;
-	
-		NAME
-
-			smuggleIndex
-
-		SYNOPSIS
-
-			smuggleIndex [add|remove|show|categories|remove_category|add_category| -h] fileName categories
-		
-		DESCRIPTION
-
-			add fileName [categories]
-				Add a file to the index
-
-			remove fileName
-				Remove a file from the index
-
-			show
-				List all files in the index
-
-			categories fileName
-				List all categories for a specified file
-
-			remove_category fileName categoryName
-				Remove a specified category for a file
-
-			add_category fileName categoryName
-				Add a spefified category for a file
-
-			-h
-				Print this message
-				
-		AUTHOR
-			Written by Nikola Sobadzhiev.
-
-EOF
-}
-
-my $command = shift;
-
-if ($command eq "add")
-{
-	$fileName = shift || printHelp();
-	@categories = @ARGV || printHelp();
-	addFileWithCategories($fileName, @categories);
-}
-elsif ($command eq "remove")
-{
-	$fileName = shift || printHelp();
-	removeFile($fileName);
-}
-elsif ($command eq "show")
-{
-	@allFiles = allFilePaths();
-	foreach $file (@allFiles)
-	{
-		print("\t" . $file . "\n");
-	}
-}
-elsif ($command eq "categories")
-{
-	$fileName = shift || printHelp();
-	@allCategories = categoriesForFile($fileName);
-	foreach $category (@allCategories)
-	{
-		print("\t" . $category . "\n");
-	}
-}
-elsif ($command eq "remove_category")
-{
-	$fileName = shift || printHelp();
-	$category = shift || printHelp();
-	removeCategoryForFile($fileName, $category);
-}
-elsif ($command eq "add_category")
-{
-	$fileName = shift || printHelp();
-	$category = shift || printHelp();
-	addCategoryForFile($fileName, $category);
-}
-else
-{
-	printHelp();
-}
-
 
 #
 #
