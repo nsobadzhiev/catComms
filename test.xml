@@ -1,0 +1,31 @@
+<opt>
+  <file path="./sampleData/sampleText">
+    <tags>
+      <tag>programming</tag>
+      <tag>uni</tag>
+      <tag>test</tag>
+    </tags>
+  </file>
+  <file path="./sampleData/sampleText">
+    <tags>
+      <tag>linux</tag>
+      <tag>programming</tag>
+      <tag>uni</tag>
+    </tags>
+  </file>
+  <file path="./sampleData/unetbootin-linux-575.bin">
+    <tags>
+      <tag>programming</tag>
+      <tag>linux</tag>
+    </tags>
+  </file>
+  <file path="./sampleData/The_Dead_Rocks_-_Easy_Job.mp3">
+    <tags tag="music" />
+  </file>
+  <file path="./sampleData/Android Application Development_ Programming with the Google SDK (2009) - 9780596521479 O'Reilly.pdf">
+    <tags>
+      <tag>programming</tag>
+      <tag>uni</tag>
+    </tags>
+  </file>
+</opt>

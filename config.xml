@@ -1,0 +1,41 @@
+<config>
+	<peers>
+		<peer>
+			<address>localhost</address>
+			<port>6001</port>
+		</peer>
+		<peer>
+			<address>localhost</address>
+			<port>6002</port>
+		</peer>
+		<peer>
+			<address>localhost</address>
+			<port>6003</port>
+		</peer>
+	</peers>
+	<connection>
+		<port>6000</port>				<!--> This is the port on which the server listens to <-->
+	</connection>
+	<sharedFiles>
+		<file>/media/niki/niki/Documents/Uni/Perl/project/sampleData/sampleText</file>
+		<file>/media/niki/niki/Documents/Uni/Perl/project/sampleData/sampleFolder/</file>
+	</sharedFiles>
+	<interestCategories>
+		<category>
+			<name>music</name>
+			<destination>./sampleData/sampleMusic/</destination>
+		</category>
+		<category>
+			<name>work</name>
+			<destination>/media/niki/niki/Documents/Uni/Perl/project/sampleData/sampleWork/</destination>
+		</category>
+		<category>
+			<name>uni</name>
+			<destination>./sampleData/sampleUni/</destination>
+		</category>
+		<category>
+			<name>programming</name>
+			<destination>./sampleData/sampleProgramming/</destination>
+		</category>
+	</interestCategories>
+</config>

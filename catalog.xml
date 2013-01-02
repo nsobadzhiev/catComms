@@ -1,0 +1,18 @@
+<catalog>
+	<file>
+		<name>sampleFile</name>
+		<checksum>0bfddb29e0736a79979f3a261831430b</checksum>
+		<tags>
+			<tag>programming</tag>
+			<tag>linux</tag>
+		</tags>
+	</file>
+	<file>
+		<name>sampleFile2</name>
+		<checksum>0bfddb29e0736a79979f3a261831430c</checksum>
+		<tags>
+			<tag>work</tag>
+			<tag>uni</tag>
+		</tags>
+	</file>
+</catalog>
