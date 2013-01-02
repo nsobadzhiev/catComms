@@ -3,7 +3,7 @@
 require "xmlParser.pl";
 require "checksum.pl";
 require "config.pl";
-require "smuggleIndex.pl";
+require "catCommsIndex.pl";
 use Data::Dumper;
 
 sub parseCatalog($)
