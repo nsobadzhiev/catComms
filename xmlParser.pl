@@ -19,6 +19,15 @@ sub xmlSave($$)
 	XMLout($indexRef, OutputFile => $savePath);
 }
 
+sub xmlSaveWithRootItem($$$)
+{
+	my $indexRef = shift || die "xmlSaveWithRootItem called with no hash\n";
+	my $savePath = shift || die "xmlSaveWithRootItem called with no save path\n";
+	my $rootItemName = shift || die "xmlSaveWithRootItem called with no root item name\n";
+
+	XMLout($indexRef, OutputFile => $savePath, RootName => $rootItemName);
+}
+
 sub xmlString($)
 {
 	my $indexRef = shift || die "xmlString called with no hash\n";
