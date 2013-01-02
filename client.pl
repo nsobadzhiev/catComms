@@ -7,13 +7,6 @@ require "config.pl";
   
 my $catalogFileName = "catalog.xml";
 
-#$bandwidth = 1024*5 ; # 5Kb/s
-$bandwidth = 1024*1024 ; # 5Kb/s
-
-&send_file( $ARGV[0] , $ARGV[1]||'localhost' , $ARGV[2]||6123 ) ;
-
-exit;
-
 sub negotiateCatalogWithPeer($)
 {
 	my $socket = shift;
