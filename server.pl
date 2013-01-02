@@ -67,7 +67,7 @@ sub handleCatalogReceived($)
 	
 	my $responseCatalog = catalogForFiles(@requestFiles);
 	
-	sendString($server, $catalogFileName);
+	sendString($server, $responseCatalog, $catalogFileName);
 }
 
 sub allFilesFromDirs($)
@@ -98,3 +98,5 @@ sub hasFileLocally($$$)
 	}
 	return 0;
 }
+
+1;
