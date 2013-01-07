@@ -5,7 +5,7 @@ require "xmlParser.pl";
 
 use Data::Dumper;
 
-my $configFileName = "config.xml";
+my $configFileName = "/media/niki/niki/Documents/Uni/Perl/project/catComms/config.xml";
 
 my %configHash = undef;
 my @categories = undef;
@@ -56,6 +56,11 @@ sub sharedFiles()
 sub sharedFilesFullPath()
 {
 	return @sharedFilesFullPath;
+}
+
+sub serverPort()
+{
+	return $serverPort;
 }
 
 sub parseConfig()
