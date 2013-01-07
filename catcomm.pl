@@ -3,6 +3,7 @@
 require "client.pl";
 require "server.pl";
 require "catCommsIndex.pl";
+require "config.pl";
 
 sub printHelp()
 {
@@ -63,11 +64,14 @@ sub printHelp()
 EOF
 }
 
+parseConfig();
+
 my $command = shift;
 
 if ($command eq "start")
 {
-	startServer();
+	my $serverPort = serverPort();
+	startServer($serverPort);
 }
 elsif ($command eq "stop")
 {
