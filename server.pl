@@ -12,17 +12,29 @@ my $server = undef;
 my $catalogFileName = "catalog.xml";
 my $hasNegotiatedCatalog = 0;		# true if peers have exchanged catalogs
 
-sub startServer($$$)
+# INT_handler is the subroutine that is going to be called in response to a SIG_INT from the OS
+# (typically when typing CNTRL+C in terminal).
+# This implementation will make sure to close the socket, otherlise it might stay open after the server
+# is no longer needed
+sub INT_handler {
+	print "Closing server...\n";
+	stopServer();
+	exit(0);
+}
+
+$SIG{'INT'} = 'INT_handler';		# Use INT_handler as handler for SIG_INT (CNTRL+C)
+$SIG{'TSTP'} = 'INT_handler';		# USE INT_handler as handler for SIG_TSTP (CNTRL+Z)
+
+sub startServer($$)
 {
-	my $address = shift || localhost;
-	my $port = shift || 6123;
+	my $port = shift;
 	my $saveDir = shift || './files';
 	
-	if (! -d $saveDir) 
-	{
-		mkdir($saveDir, 0755);
-		print "Save directory created: $saveDir\n";
-	}
+#	if (! -d $saveDir) 
+#	{
+#		mkdir($saveDir, 0755);
+#		print "Save directory created: $saveDir\n";
+#	}
 	
 	$server = IO::Socket::INET->new(
 	  Listen => 5,
@@ -34,7 +46,8 @@ sub startServer($$$)
 	while(my $client = $server->accept)
 	{
 		print "\nNew client!\n";
-		my $receivedCatalog = receiveFile($client, $saveDir, $catalogFileName);
+		my $receivedCatalog = receiveFile($client, $saveDir, $hasNegotiatedCatalog);
+		print("Received catalog: $receivedCatalog\n");
 		if ($receivedCatalog)
 		{
 			handleCatalogReceived($receivedCatalog);
