@@ -73,3 +73,15 @@ foreach $file (@allFiles)
 }
 
 print("\nEnd of test 4:\n");
+
+print("\n\nTest 5: ");
+
+print("Retrieve server port\n");
+print("Result:\n");
+
+my $port = serverPort();
+
+print("$port\n");
+
+
+print("\nEnd of test 5:\n");

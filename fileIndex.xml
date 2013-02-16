@@ -1,4 +1,4 @@
-<opt>
+<index>
   <file path="/media/niki/niki/Documents/Uni/Perl/project/sampleData/sampleText">
     <tags>
       <tag>programming</tag>
@@ -21,7 +21,9 @@
     </tags>
   </file>
   <file path="/media/niki/niki/Documents/Uni/Perl/project/sampleData/The_Dead_Rocks_-_Easy_Job.mp3">
-    <tags tag="music" />
+    <tags>
+	  <tag>music</tag>
+	</tags>
   </file>
   <file path="/media/niki/niki/Documents/Uni/Perl/project/sampleData/Android Application Development_ Programming with the Google SDK (2009) - 9780596521479 O'Reilly.pdf">
     <tags>
@@ -36,4 +38,4 @@
       <tag>test2</tag>
     </tags>
   </file>
-</opt>
+</index>

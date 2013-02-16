@@ -5,15 +5,14 @@ require "catalog.pl";
 require "fileTransfer.pl";
 require "config.pl";
   
-my $catalogFileName = "catalog.xml";
+my $catalogFileName = "/media/niki/niki/Documents/Uni/Perl/project/catComms/catalog.xml";
 
 sub negotiateCatalogWithPeer($)
 {
 	my $socket = shift;
 	my $catalog = composeCatalog();
-	sendString($socket, $catalog, $catalogFileName);
-	
-	my $responseCatalog = receiveFile($socket, "", $catalogFileName);
+	sendString($socket, $catalog, "catalog.xml");
+	my $responseCatalog = receiveFile($socket, "files", 0);
 	return parseCatalog($responseCatalog);
 }
 
@@ -29,6 +28,7 @@ sub syncWithPeer($$)
 	{
 		my $fileName = $file->{name};
 		my $socket = openSocketToPeer($address, $port);
+		print "Sending file: $fileName\n";
 		sendFile($socket, $fileName);
 		destroySocket($socket);
 	}
@@ -50,6 +50,8 @@ sub openSocketToPeer($$)
 {
 	my $address = shift || die "openSocketToPeer called with no host address\n";
 	my $port = shift || die "openSocketToPeer called with no host port\n";
+	
+	print("Opeining socket to peer: ($address:$port)\n");
 	
 	my $sock = new IO::Socket::INET(
      		PeerAddr => $address,

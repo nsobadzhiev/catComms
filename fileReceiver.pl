@@ -64,7 +64,7 @@ sub startServer($$$)
 						print "Saving: $data{filesave} ($data{filesize}bytes)\n" ;
 					}
 
-					if (not (($data{filename} eq $catalogFileName) and ($hasNegotiatedCatalog)))
+					if ($hasNegotiatedCatalog)
 					{
 						# the if statement above checks if catalogs are negotiated. This prevents
 						# a peer from sending files before catalogs are exchanged

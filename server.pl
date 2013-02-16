@@ -9,6 +9,7 @@ require "checksum.pl";
 require "fileTransfer.pl";
 
 my $server = undef;
+my $currentClient = undef;
 my $catalogFileName = "catalog.xml";
 my $hasNegotiatedCatalog = 0;		# true if peers have exchanged catalogs
 
@@ -40,14 +41,17 @@ sub startServer($$)
 	  Listen => 5,
 	  LocalAddr => 'localhost',
 	  LocalPort => $port ,
-	  Proto     => 'tcp'
+	  Proto     => 'tcp',
+	  Reuse 	=> 1, 
 	) or die "Can't create server socket: $!";
 	
 	while(my $client = $server->accept)
 	{
+		$currentClient = $client;
 		print "\nNew client!\n";
 		my $receivedCatalog = receiveFile($client, $saveDir, $hasNegotiatedCatalog);
-		print("Received catalog: $receivedCatalog\n");
+		#if (not $hasNegotiatedCatalog)
+			$hasNegotiatedCatalog = 1;
 		if ($receivedCatalog)
 		{
 			handleCatalogReceived($receivedCatalog);
@@ -71,16 +75,27 @@ sub handleCatalogReceived($)
 	foreach my $file (@filesInCatalog)
 	{
 		my $fileName = $file->{name};
+		print "File in catalog: $file\n";
 		my $fileChecksum = $file->{checksum};
 		if (not hasFileLocally($fileName, $fileChecksum, @localFiles))
 		{
-			push(@requestFiles, $fileName);
+			print "Doesn't have file: $fileName \n";
+			push(@requestFiles, $file);
+		}
+		else
+		{
+			print "Have file: $fileName \n";
 		}
 	}
 	
-	my $responseCatalog = catalogForFiles(@requestFiles);
+	print "Files in catalog: ";
+	print(Dumper @requestFiles);
 	
-	sendString($server, $responseCatalog, $catalogFileName);
+	my $responseCatalog = catalogForFiles(@requestFiles);
+	print "Response catalog: $responseCatalog\n";
+	
+	sendString($currentClient, $responseCatalog, $catalogFileName);
+	print "All done sending\n";
 }
 
 sub allFilesFromDirs($)
@@ -88,6 +103,7 @@ sub allFilesFromDirs($)
 	my @allFiles = ();
 	foreach my $dir (@_)
 	{
+		print "Finding all files in dir $dir\n";
 		my @dirContents = filesReccursive($dir);
 		@allFiles = (@allFiles, @dirContents);
 	}
@@ -98,6 +114,8 @@ sub hasFileLocally($$$)
 {
 	my $fileName = shift || die "hasFileLocally called with no file name\n";
 	my $fileChecksum = shift || die "hasFileLocally called with no checksum\n";
+	print "local files: ";
+	print(Dumper @_);
 	
 	foreach my $localFile (@_)
 	{

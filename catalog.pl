@@ -10,16 +10,22 @@ sub parseCatalog($)
 {
 	my $catalogString = shift || "parseCatalog called with no catalog string\n";
 	my @parsedFiles = ();
-	my %catalogHash = xmlParser($catalogString);
-	my $filesArray = $catalogHash{catalog};
+	my @catalogHash = xmlParser($catalogString);
+	print "catalogHash: ";
+	print(Dumper $catalogHash[1]);
+	my $filesArray = $catalogHash[1];
 	
-	foreach $file (@$filesArray)
+	
+	foreach $file (keys %$filesArray)
 	{
-		my $fileName = $file->{name};
-		my $checksum = $file->{checksum};
+		my $fileName = $file;
+		print "File in catalog:\n";
+		print(Dumper $file);
+		my $checksum = $filesArray->{$file}->{checksum};
+		print "Checksum in catalog: $checksum\n";
 		my @tags = ();
-		my $tagsArray = $file->{tags};
-		my $tagArray = $tagsArray->{tags};
+		my $tagsArray = $filesArray->{$file}->{tags};
+		my $tagArray = $tagsArray->{tag};
 		foreach $tag (@$tagArray)
 		{
 			push(@tags, $tag);
@@ -41,6 +47,7 @@ sub composeCatalog()
 	my @allFilesFullPath = sharedFilesFullPath();
 	my %catalog = ();
 	my @filesElement = ();
+	print("Going through files\n");
 	
 	foreach my $sharedFile (@allFiles)
 	{
@@ -60,16 +67,37 @@ sub composeCatalog()
 	return xmlStringWithRootItem(\%catalog, "catalog");
 }
 
-sub catalogForFiles($)
+sub catalogForFiles(@)
 {
+	parseConfig();
+
 	my %catalog = ();
 	my @filesElement = ();
-	foreach my $file (@_)
+	
+	print("dumping parameter files\n");
+                print(Dumper @_);
+	
+	foreach my $sharedFile (@_)
 	{
+		print("dumping sharedFile\n");
+                print(Dumper $sharedFile);
+		my $fileChecksum = $sharedFile->{checksum};
+		my $categories = $sharedFile{tags};
+		print("dumping categories\n");
+		print(Dumper @$categories);
 		my %fileHash = ();
-		$fileHash{name} = [$file];
+		my %tagsHash = ();
+		
+		$tagsHash{tag} = $categories;
+		$fileHash{name} = [$sharedFile->{name}];
+		$fileHash{checksum} = [$fileChecksum];
+		$fileHash{tags} = [\%tagsHash];
 		push(@filesElement, \%fileHash);
 	}
+
+	print("dumping request files\n");
+                print(Dumper @filesElement);
+
 	$catalog{file} = \@filesElement;
 	return xmlStringWithRootItem(\%catalog, "catalog");
 }

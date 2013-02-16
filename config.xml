@@ -2,7 +2,7 @@
 	<peers>
 		<peer>
 			<address>localhost</address>
-			<port>6001</port>
+			<port>6011</port>
 		</peer>
 		<peer>
 			<address>localhost</address>
@@ -14,7 +14,7 @@
 		</peer>
 	</peers>
 	<connection>
-		<port>6000</port>				<!--> This is the port on which the server listens to <-->
+		<port>6010</port>				<!--> This is the port on which the server listens to <-->
 	</connection>
 	<sharedFiles>
 		<file>/media/niki/niki/Documents/Uni/Perl/project/sampleData/sampleText</file>
